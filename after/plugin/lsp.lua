@@ -20,7 +20,16 @@ end)
 require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
 
 -- Add Verilog support by configuring the verible language server
-lsp.ensure_installed({ 'verible' })  -- Ensures the Verilog LSP is installed
+lsp.ensure_installed({'pyright','lua_ls', 'rust_analyzer',  'verible' })  -- Ensures the Verilog LSP is installed
+
+require("lspconfig").pyright.setup({
+    on_attach = lsp.on_attach,
+    flags = {
+        debounce_text_changes = 150,
+    }
+})
+
+require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
 
 require("lspconfig").verible.setup({
   on_attach = lsp.on_attach,  -- Attach the LSP key mappings
@@ -29,9 +38,36 @@ require("lspconfig").verible.setup({
   },
   settings = {
     -- Customize Verilog LSP settings here, if needed
-  }
+    verible = {
+        lint= {enabled = true},
+        completion = {enabled = true},
+    }
+}
 })
 
+require("lspconfig").rust_analyzer.setup({
+    on_attach = lsp.on_attach,
+
+    settings = {
+        ["rust_analyzer"] = {
+            imports = {
+                granularity = {
+                    group = "module",
+                },
+                prefix = "self",
+            },
+
+            cargo = {
+                buildScripts = {
+                    enable = true,
+                },
+            },
+            proMacro = {
+                enable = true,
+            },
+        }
+    }
+})
 -- Set up lsp-zero with any global settings
 lsp.setup()
 

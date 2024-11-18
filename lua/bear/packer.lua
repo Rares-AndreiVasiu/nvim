@@ -13,12 +13,13 @@ return require('packer').startup(function(use)
 	  requires = { {'nvim-lua/plenary.nvim'} }
   }
 
+  -- kanagawa colorscheme
   use({
-	  'rebelot/kanagawa.nvim', 
-	  as = 'kanagwa',
-	  config = function()
-		  vim.cmd('colorscheme kanagawa')
-	  end
+      'rebelot/kanagawa.nvim', 
+      as = 'kanagwa',
+      config = function()
+          vim.cmd('colorscheme kanagawa')
+      end
   })
 
   use ('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
@@ -57,4 +58,7 @@ return require('packer').startup(function(use)
           {'rafamadriz/friendly-snippets'},
       }
   }
+  if packer_bootstrap then
+      require('packer').sync()
+    end
   end)
